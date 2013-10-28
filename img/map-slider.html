@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://localhost:8000/map-slider.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head><body><h1>Mexico and Oil Production in Time</h1>
+<h2 class="year"></h2>
+<div class="slider"></div>
+
+<script src="./map-slider_files/d3.v3.min.js" charset="utf-8"></script>
+<script src="./map-slider_files/queue.v1.min.js"></script>
+<script src="./map-slider_files/topojson.v1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./map-slider_files/slider.css">
+
+<script>
+
+var margin = {top: 20, right: 20, bottom: 20, left: 20};
+    width = 750 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+queue()
+    .defer(d3.tsv, "merged-multirace.txt")
+    .defer(d3.json, "mexico.json")
+    .await(ready);
+
+function ready(error, mexico) {
+
+  console.log("mexico", mexico);
+
+  //Making the variable counties before we begin
+  var states = topojson.feature(mexico, mexico.objects.layer1); //Topojson function -- look at the data 
+  
+  console.log(states)
+  
+  var projection = d3.geo.mercator()
+      .center([-102, 23])
+      .scale(width * 1.4)
+      .translate([width/2, height/2]);
+
+  var path = d3.geo.path()
+    .projection(projection);
+
+  var countyShapes = svg.selectAll(".county")
+      .data(states.features)
+    .enter().append("path")
+      .attr("class", "county")
+      .attr("d", path);
+}
+
+</script><svg width="750" height="700"><g transform="translate(20,20)"></g></svg></body></html>

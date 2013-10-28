@@ -1,33 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Has Oil Made Mexico any Richer?</title>
-	<meta name="generator" content="TextMate http://macromates.com/">
-	<meta name="author" content="Diego Ponce de Leon Barido">
-	<!-- Date: 2013-10-25 -->
-		<link rel="stylesheet" type="text/css" href="/css/styles.css">
-</head>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/slider.css">
+<link rel="stylesheet" type="text/css" href="/css/styles.css">
+
+
 <body>
   
-  <h1 class = "mainhead" align = "center"> Has Oil Made Mexico any Richer? </h1>
-  <h2 class = "littlehead" align = "center"> Thoughts of transitioning into the Shale Gas Frontier. </h2>
+<h1 class="mainhead">Has Oil Made Mexico Any Richer? </h1>
+<h2 class="littlehead"> Thoughts of transitioning into the Shale Gas Frontier. </h2>
   
-  <p class = "styling"> When news came to me that the country was 'reforming' its energy sector, I was excited about the process. I imagined a reform that would shift the country away from a fossil fuel based economy, and transition Mexico into the 21st Century. I imagined a strong focus on developing clean tech funds, policy and financial mechanisms for supporting the growth of renewable energy, and better distribution mechanisms for the massive wealth that oil and gas usually leave behind.</p>
+<p>When news came to me that the country was 'reforming' its energy sector, I was excited about the process. I imagined a reform that would shift the country away from a fossil fuel based economy, and transition Mexico into the 21st Century. I imagined a strong focus on developing clean tech funds, policy and financial mechanisms for supporting the growth of renewable energy, and better distribution mechanisms for the massive wealth that oil and gas usually leave behind.</p>
   
-    <p class = "styling"> As I came to the last pages of the twenty page document, however, I was amazed its lack of vision. There was very little imagination. Its main strategy was on exploiting shale gas and not renewable energy. Its main focus was on economic growth and not development. There seemed to be little thought going towards integrated resource planning; but the usual promises were there. Shale gas' wealth would eradicate extreme poverty, fight hunger, and improve the quality of our health services. It would also allocate funds to education, and to developing a highly skilled labor force, one that would be able to meet the country's pressing energy challenges.  </p>
+<p> As I came to the last pages of the twenty page document, however, I was amazed its lack of vision. There was very little imagination. Its main strategy was on exploiting shale gas and not renewable energy. Its main focus was on economic growth and not development. There seemed to be little thought going towards integrated resource planning; but the usual promises were there. Shale gas' wealth would eradicate extreme poverty, fight hunger, and improve the quality of our health services. It would also allocate funds to education, and to developing a highly skilled labor force, one that would be able to meet the country's pressing energy challenges.</p>
     
-  <p class = "styling" align = "center"> We've heard this same story with oil before, but how far has it taken us? </p><br></br>
+<p> We've heard this same story with oil before, but how far has it taken us? </p>
   
-  <div>
-    		<a align = "center"><img src="img/MexOilReserves.gif"></a>	    		
-</div><br></br>
+<script>
 
-    <p class = "styling"> In 1979, then President Jose Lopez Portillo (1976 - 1982) announced to the world that Mexico had begun exploiting 'Cantarell', the world's third largest oil field at the time (just behind the Ghawar and Burgan fields of Saudi Arabia and Kuwait). This bounty came with promises of jobs, technological development, commitment to industrialization, and sustainable city-building. Above all, Lopez Portillo (and his team of experts) stressed that this windfall of wealth would be reinvested in Mexico to guarantee a future 'beyond Oil'. </p>
+var margin = {top: 5, right: 5, bottom: 5, left: 5};
+    width = 550 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+queue()
+    // .defer(d3.tsv, "merged-multirace.txt")
+    .defer(d3.json, "mexico.json")
+    .await(ready);
+
+function ready(error, mexico) {
+
+  console.log("mexico", mexico);
+
+  //Making the variable counties before we begin
+  var states = topojson.feature(mexico, mexico.objects.layer1); //Topojson function -- look at the data 
+  
+  console.log(states)
+  
+  var projection = d3.geo.mercator()
+      .center([-102, 23])
+      .scale(width * 1.4)
+      .translate([width/2, height/2]);
+
+  var path = d3.geo.path()
+    .projection(projection);
+
+  var countyShapes = svg.selectAll(".county")
+      .data(states.features)
+    .enter().append("path")
+      .attr("class", "county")
+      .attr("d", path);
+}
+
+</script>   		
+
+<p>In 1979, then President Jose Lopez Portillo (1976 - 1982) announced to the world that Mexico had begun exploiting 'Cantarell', the world's third largest oil field at the time (just behind the Ghawar and Burgan fields of Saudi Arabia and Kuwait). This bounty came with promises of jobs, technological development, commitment to industrialization, and sustainable city-building. Above all, Lopez Portillo (and his team of experts) stressed that this windfall of wealth would be reinvested in Mexico to guarantee a future 'beyond Oil'.</p>
     
-        <p class = "styling"> It took 24 years for Cantarell to reach 'peak oil' status. This means that in 2004 Mexico's largest oil field had reached its maximum rate of petroleum extraction, after which it entered a state of terminal decline. Like the graphs below depict, Mexico has experienced a 'net surplus' of oil since the 1980's meaning that it has produced more oil than it consumes, although this has been decreasing over time. The US and Norway 'peaked' in 1970 and 2001 respectively, and Brazil has become a net exporter of oil since 2009. Brazil's success, however, has been led by a stubborn decisiveness to dramatically reduce oil consumption, a strong emphasis on research and development, and a focus on non-fossil fuels alternatives for national consumption. Since 2003 it followed an aggressive ethanol blending policy - and today 80% of the cars in the country run on blended fuel. It's not oil that has put Brazil where it is today, its more about where Brazil has been putting its money - and how. </p><br></br>
+<p class = "styling"> It took 24 years for Cantarell to reach 'peak oil' status. This means that in 2004 Mexico's largest oil field had reached its maximum rate of petroleum extraction, after which it entered a state of terminal decline. Like the graphs below depict, Mexico has experienced a 'net surplus' of oil since the 1980's meaning that it has produced more oil than it consumes, although this has been decreasing over time. The US and Norway 'peaked' in 1970 and 2001 respectively, and Brazil has become a net exporter of oil since 2009. Brazil's success, however, has been led by a stubborn decisiveness to dramatically reduce oil consumption, a strong emphasis on research and development, and a focus on non-fossil fuels alternatives for national consumption. Since 2003 it followed an aggressive ethanol blending policy - and today 80% of the cars in the country run on blended fuel. It's not oil that has put Brazil where it is today, its more about where Brazil has been putting its money - and how. </p><br></br>
 
         <div>
           		<a><img src="img/consumption.gif"></a>	
@@ -35,7 +71,7 @@
 
       </div><br></br>
       
-     <p class = "styling"> Things are not so bad, though. If Mexico had saved its oil revenues derived from the net balance of the production and consumption of oil, it could today have amassed a massive wealth over 400 Quadrillion dollars, a number 400,000 times the current size of the Mexican economy. Its obvious that Mexico didn't save all this money, though. Like Lopez Portillo said, and the current PRI administration promises, oil revenues were spent on education, poverty alleviation, research and development and Mexico's future 'beyond oil' </p><br></br>
+     <p class = "styling"> Things are not so bad, though. If Mexico had saved its oil revenues derived from the net balance of the production and consumption of oil, it could today have amassed a massive wealth over 400 Quadrillion dollars, a number 400,000 times the current size of the Mexican economy. Its obvious that Mexico didn't save all this money, though. Like Lopez Portillo said, and the current PRI administration promises, oil revenues were spent on education, poverty alleviation, research and development and Mexico's future 'beyond oil'. Indeed Mexicans a share of their bounty through government expenditures on goods and services, cash benefits, and subsidies, but how does the future look like for Mexico? </p><br></br>
      
      <br></br>
 
@@ -44,8 +80,6 @@
        		<a><img src="img/oilrevenues.jpg"></a>	
 
    </div><br></br>
+   
+        <p class = "styling"> Lets begin with poverty and inequality. s</p>
       
-
-
-</body>
-</html>

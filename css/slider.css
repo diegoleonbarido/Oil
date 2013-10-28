@@ -1,0 +1,24 @@
+
+<style>
+
+
+svg {
+  border: solid 1px white;
+}
+
+.county {
+  fill: black;
+  stroke: white;
+}
+
+.county:hover {
+  fill: red;	
+  stroke: white;
+}
+
+input {
+  display: block;
+  width: 200px;
+  margin: 10px 0;
+}
+</style>

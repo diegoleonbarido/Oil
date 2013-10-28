@@ -1,0 +1,25 @@
+
+<style>
+body {
+  font-family: Helvetica;
+}
+
+svg {
+  border: solid 1px #ddd;
+}
+
+.county {
+  fill: grey;
+  stroke: white;
+}
+
+.county:hover {
+  stroke: black;
+}
+
+input {
+  display: block;
+  width: 200px;
+  margin: 10px 0;
+}
+</style>
