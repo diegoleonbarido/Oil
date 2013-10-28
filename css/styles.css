@@ -15,13 +15,33 @@ body {
 	font-family:Century;
 	font-size: 40px;
 	color: black;
-
 }
 
 p {
   font-family:century, georgia, serif;
   line-height:1.4em;
   font-size:19px;
+}
+
+
+svg {
+  border: solid 1px white;
+}
+
+.county {
+  fill: black;
+  stroke: white;
+}
+
+.county:hover {
+  fill: red;	
+  stroke: white;
+}
+
+input {
+  display: block;
+  width: 200px;
+  margin: 10px 0;
 }
 
 </style>

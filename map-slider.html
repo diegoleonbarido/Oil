@@ -23,7 +23,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 queue()
-    // .defer(d3.tsv, "oil.csv")
+    // .defer(d3.csv, "oil.csv")
     .defer(d3.json, "mexico.json")
     .await(ready);
 
