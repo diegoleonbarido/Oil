@@ -1,0 +1,81 @@
+<style>
+
+body {
+  
+  font-family:Helvetica;
+  
+}
+
+/* Makes the space between counties with a little grey line */
+.entidad{
+  fill: grey;
+  stroke: white;
+}
+
+.entidad text {
+	fill: black;
+	stroke: none;
+	display: none;
+	font-size: 30px;
+}
+
+.entidad:hover text {
+	display: block;
+}
+
+/* When you hover it makes things black*/
+/* You don't even have to do anything else. As long as county is defined it will hover over it */
+.entidad:hover {
+   stroke:black;
+}
+
+svg {
+  border: solid 1px white;
+}
+
+.my-legend{
+	padding: 1%;
+}
+.legend-title {
+  text-align: left;
+  margin-bottom: 8px;
+  font-family: Helvetica, Arial, Sans-serif;
+  font-weight: bold;
+  font-size: 90%;
+  }
+
+.legend-scale ul {
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+  }
+
+.legend-scale ul li {
+  display: block;
+  float: left;
+  width: 50px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-size: 80%;
+  list-style: none;
+  }
+
+ul.legend-labels li span {
+  display: block;
+  float: left;
+  height: 15px;
+  width: 50px;
+  }
+
+.legend-source {
+  font-size: 70%;
+  color: #999;
+  clear: both;
+  }
+
+a {
+  color: #777;
+  }
+
+</style>
