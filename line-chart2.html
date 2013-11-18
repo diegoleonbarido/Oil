@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<link rel="stylesheet" type="text/css" href="css/line-styles.css">
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Strikeouts</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Diego Ponce de Leon Barido">
+	<!-- Date: 2013-09-25 -->
+	<h1> Money from Oil  </h1>
+	<div class = "chart"></div>
+</head>
+<body>
+	
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type = "text/javascript">
+	
+	//We'll start by makig a scatterplot, for which we'll need two scaales. First we need svg element to put our chart into. This code goes into anything potentially useful	
+	var margin = {top:20, right: 20, bottom: 20, left:20 };	
+	var width = 750 - margin.left - margin.right,
+	   height = 500 - margin.top - margin.bottom;
+
+  //Because we're making a chart we need to specify the D3 Select
+	var svg = d3.select(".chart").append("svg")
+	  .attr("width", width + margin.left + margin.right)
+	  .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+		
+	//Loading the data
+	d3.csv("data/money.csv", function(data){
+	  
+	  // Now we'll need an xScale
+  	var xScale = d3.scale.linear()
+  		.domain([1986,2012])
+  		.range([0,width]);
+				
+		data.forEach(function(d) {
+		//Turning variables into numbers
+		d.money = +d.money;
+		d.year = +d.year;	
+		});
+		
+		//Now we're adding a yscale
+      var yScale = d3.scale.linear()
+       .domain([0,d3.max(data, function(d) { return d.money;})])
+       .range([height,0]);
+		
+		data.sort(function(a, b) { return b.year - a.year})
+		
+		// var nation = ["Brazil", "Mexico", "Denmark"];
+		//This is currently being used for just one team - Oakland
+	  // var mexico = data.filter(function(d) {return d.country === "Mexico"});
+	 //  var brazil = data.filter(function(d) {return d.country === "Brazil"});
+	 //  var denmark = data.filter(function(d) {return d.country === "Denmark"});
+	 //  var finland = data.filter(function(d) {return d.country === "Finland"});
+	 //  var germany = data.filter(function(d) {return d.country === "Germany"});
+	 //  var japan= data.filter(function(d) {return d.country === "Japan"});
+	 //  var norway = data.filter(function(d) {return d.country === "Norway"});
+	 // 	var us = data.filter(function(d) {return d.country === "United States"});
+		var uruguay = data.filter(function(d) {return d.country === "Uruguay"});
+		
+// console.log(us)
+		
+		//And now for the magical data join		--> What exactly is this data join?
+      // svg.selectAll(".dots")
+      //  .data(Mexico)
+      //  .enter().append("circle")
+      //    .attr("class", "dot")
+      //    .attr("r",5)
+      //    .attr("cx", function(d,i) {return xScale(d.year);})
+      //    .attr("cy", function(d) {return yScale(d.bbd);});   
+				
+		//Creates a function for us that we are saving as line and this function will take a data set and spit out the proper code to             make an SVG path element		
+		var line = d3.svg.line()
+					.x(function(d) {return xScale(d.year); })
+					.y(function(d) {return yScale(d.money) });
+		
+    svg.append("path")
+          .datum(mexico)
+          .attr("class", "line-mexico")
+          .attr("d", line);
+          
+    svg.append("path")
+          .datum(brazil)
+          .attr("class", "line-brazil")
+          .attr("d", line);
+          
+    svg.append("path")
+          .datum(denmark)
+          .attr("class", "line-denmark")
+          .attr("d", line);      
+
+    svg.append("path")
+          .datum(finland)
+          .attr("class", "line-finland")
+          .attr("d", line);
+                                  
+    svg.append("path")
+          .datum(japan)
+          .attr("class", "line-japan")
+          .attr("d", line);
+      
+    svg.append("path")
+         .datum(norway)
+         .attr("class", "line-norway")
+         .attr("d", line);
+                               
+   svg.append("path")
+           .datum(us)
+           .attr("class", "line-usa")
+           .attr("d", line);
+
+   svg.append("path")
+         .datum(uruguay)
+         .attr("class", "line-uruguay")
+         .attr("d", line);
+
+          
+		var xAxis = d3.svg.axis()
+			.tickFormat(function(d) {return d; })
+			.scale(xScale);
+
+		// Let's use this generator to generate some svg code
+		svg.append("g")
+			.attr("class","axis")
+			//This piece of codes brings it to the bottom
+			.attr("transform", "translate(0, " + height + ")")
+			.call(xAxis);
+		
+		
+    // //Cool Blamo Function
+    //       d3.select(".chart").append("button").text("Blamo!").on("click", function() {
+    //           d3.selectAll("circle")
+    //               .transition()
+    //               .duration(2000)
+    //               .ease("bounce")
+    //               .delay(function(d, i){ return i * 50})
+    //               .attr("cy", height)
+    //               .attr("r", 7);
+    //       });
+					
+						
+	});
+	
+
+	</script>
+
+	
+
+</body>
+</html>

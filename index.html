@@ -27,11 +27,11 @@ var margin = {top: 5, right: 5, bottom: 5, left: 5};
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 queue()
-    // The data sets have to be inputed in order
+    // The data sets have to be inputed in order. We use queue() when we have two different data sets that we'd like to work with
     .defer(d3.csv, "oil.csv")
     .defer(d3.json, "mexico.json")
     .await(ready);

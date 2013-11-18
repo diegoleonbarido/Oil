@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<link rel="stylesheet" type="text/css" href="css/line-styles.css">
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Strikeouts</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Diego Ponce de Leon Barido">
+	<!-- Date: 2013-09-25 -->
+	<h1> Money from Oil  </h1>
+	<div class = "chart"></div>
+</head>
+<body>
+	
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script type = "text/javascript">
+	
+//We'll start by makig a scatterplot, for which we'll need two scaales. First we need svg element to put our chart into. This code goes into anything potentially useful	
+var margin = {top:20, right: 100, bottom: 50, left:20 };	
+var width = 750 - margin.left - margin.right,
+   height = 700 - margin.top - margin.bottom;
+
+//Because we're making a chart we need to specify the D3 Select
+var svg = d3.select(".chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var yScale = d3.scale.linear()
+    .range([height,0]);
+
+// Now we'll need an xScale
+var xScale = d3.scale.linear()
+   .domain([1986,2013])
+   .range([0,width]);
+
+var line = d3.svg.line()
+  	.x(function(d) {return xScale(d.year); })
+  	.y(function(d) {return yScale(d.money) });
+  	
+  	
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .tickFormat(function(d) {return d; })
+    .orient("top")
+    .tickSize(3)
+    .tickPadding(1);
+
+		
+//Loading the data
+d3.csv("data/money.csv", function(data) {
+
+  window.data = data;
+  // set min and max dynamically
+
+  //TODO, fix this
+  // yScale.domain([d3.min(data, function(d) { return d.money;}), d3.max(data, function(d) { return d.money;}) ]);
+  
+  yScale.domain([-231467.1045,60000])
+
+  //Turning variables into numbers
+  data.forEach(function(d) {
+    d.money = +d.money;
+    d.year = +d.year;	
+  });
+  
+  dataByCountry = d3.nest()
+      .key(function(d) { return d.country})
+      .entries(data);
+      
+  var countryGroup = svg.selectAll(".country-group")
+      .data(dataByCountry)
+      .enter().append("g")
+      .attr("class", "country-group");
+      
+      countryGroup.append("text")
+      .text(function(d) { return d.key; })
+      .attr("x", xScale(2010.5) )
+      .attr("y", function(d) { 
+        lastVal = d.values[d.values.length-1].money;
+        return yScale(lastVal);
+        });
+      
+  var countryLine = countryGroup.append("path")
+      .attr("d", function(d) { return line(d.values); })
+      .attr("class", function(d) { return "g-line " + d.key; });
+      
+      
+      //By adding a height below we are able to change whether the x-axis appears at the bottom of the graph or above
+      svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0,0)")
+              // .attr("transform", "translate(0,0)") -- Changing the (0,0) affects the placement of the x margin on the graph
+              .call(xAxis);
+  
+    	// Let's use this generator to generate some svg code
+  // var xAxis = svg.append("g")
+  //      .attr("class","axis")
+  //      //This piece of codes brings it to the bottom
+  //      .attr("transform", "translate(0, " + height + ")")
+  //      .call(xAxis);
+  
+
+      
+});
+	
+
+	</script>
+
+	
+
+</body>
+</html>
