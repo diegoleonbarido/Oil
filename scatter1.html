@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<link rel="stylesheet" type="text/css" href="css/line-styles.css">
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Strikeouts</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Diego Ponce de Leon Barido">
+	<!-- Date: 2013-09-25 -->
+	<h1> Total Oil Supply (Thousand Barrels Per Day)  </h1>
+	<div class = "chart"></div>
+</head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script type = "text/javascript">
+	
+//We'll start by makig a scatterplot, for which we'll need two scaales. First we need svg element to put our chart into. This code goes into anything potentially useful	
+var margin = {top:20, right: 100, bottom: 50, left:50 };	
+var width = 750 - margin.left - margin.right,
+   height = 700 - margin.top - margin.bottom;
+
+//Because we're making a chart we need to specify the D3 Select
+var svg = d3.select(".chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var yScale = d3.scale.linear()
+    .range([height,0]);
+
+// Now we'll need an xScale
+var xScale = d3.scale.linear()
+   .domain([1996,2013])
+   .range([0,width]);
+
+var line = d3.svg.line()
+  	.x(function(d) {return xScale(d.year); })
+  	.y(function(d) {return yScale(d.expstudent_prim_pctgdpcapita)});
+  	
+  	
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    // .tickFormat(function(d) {return d; })
+    .orient("top")
+    .tickSize(3)
+    .tickPadding(1);
+
+var yAxis = d3.svg.axis()
+   .scale(yScale)
+   .orient("left");
+   
+nolabel = [];
+		
+//Loading the data
+d3.csv("data/education.csv", function(data) {
+
+  // set min and max dynamically
+
+  //TODO, fix this
+  // yScale.domain([d3.min(data, function(d) { return d.money;}), d3.max(data, function(d) { return d.money;}) ]);
+  
+  yScale.domain([0,30])
+
+  //Turning variables into numbers
+  data.forEach(function(d) {
+    d.expstudent_prim_pctgdpcapita = +d.expstudent_prim_pctgdpcapita;
+    d.year = +d.year;	
+  });
+  
+  // window.data = data;
+
+  dataByCountry = d3.nest()
+      .key(function(d) { return d.country})
+      .entries(data);
+      
+  var countryGroup = svg.selectAll(".country-group")
+      .data(dataByCountry)
+      .enter().append("g")
+      .attr("class", "country-group");
+      
+      countryGroup.append("text")
+      .text(function(d) { 
+       label = nolabel.indexOf(d.key) > -1 ? "" : d.key ;
+       return label; 
+        })
+      .attr("x", xScale(2012) )
+      .attr("y", function(d) { 
+        lastVal = d.values[d.values.length-1].expstudent_prim_pctgdpcapita;
+        return yScale(lastVal);
+        });
+      
+    var countryLine = countryGroup.append("path")
+        .attr("d", function(d) { return line(d.values); })
+        .attr("class", function(d) { return "g-line " + d.key; });
+        
+    //Rounding up some numbers before passing them on
+    var simple_edu1 = d3.format(",.0f");    
+
+    var highlightCircle = svg.append("circle")
+        .attr('class', "highlight")
+        .attr("r", 7);
+        
+    var highlightText = svg.append("text")
+            .attr('class', "highlight-label")
+            
+    var circle = svg.selectAll(".mouse-circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "mouse-circle")
+        .attr("r", 20)
+        .style("opacity", 1)
+        .attr("cx", function(d) { return xScale(d.year); })
+        .attr("cy", function(d) { return yScale(d.expstudent_prim_pctgdpcapita); })
+        .on("mouseover", function(d) { 
+          //Making sure that the text is coming in
+          // d3.select("#oilprod").text(d.bbd);   
+          console.log("mouseover",highlightCircle)
+          // console.log()
+          highlightCircle
+              .attr("cx", xScale(d.year))
+              .attr("cy", yScale(d.expstudent_prim_pctgdpcapita))
+                 
+          highlightText
+              .attr("x",xScale(d.year) )
+              .attr("y",yScale(d.expstudent_prim_pctgdpcapita) )
+              .text(simple_edu1(d.expstudent_prim_pctgdpcapita));
+              // .attr("class","stylizing");
+        }).on("mouseout", function(d) {
+          highlightText.text("")
+          highlightCircle.attr("cx", 1000)
+        })
+            
+      //By adding a height below we are able to change whether the x-axis appears at the bottom of the graph or above
+  svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          // .attr("transform", "translate(0,0)") -- Changing the (0,0) affects the placement of the x margin on the graph
+          .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+     .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Total Oil Supply (Thousand Barrels Day)");
+      
+    	// Let's use this generator to generate some svg code
+  // var xAxis = svg.append("g")
+  //      .attr("class","axis")
+  //      //This piece of codes brings it to the bottom
+  //      .attr("transform", "translate(0, " + height + ")")
+  //      .call(xAxis);
+  
+
+});
+	
+
+	</script>
+
+ <div>
+<div id="countries">
+</div>
+
+<div id="oilprod">
+</div>
+
+</div>
+</body>
+</html>

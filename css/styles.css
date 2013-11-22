@@ -1,8 +1,10 @@
-<style>
 
 body {
-  max-width:950px;
-  margin:40px auto;
+	margin-top: 50px;
+	margin-left:300px;
+	margin-right: 300px;
+/*	width: 80%;
+	max-width: 700px;*/
 }
 
 .mainhead{
@@ -23,7 +25,6 @@ p {
   font-size:19px;
 }
 
-
 svg {
   border: solid 1px white;
 }
@@ -40,8 +41,6 @@ svg {
 
 input {
   display: block;
-  width: 200px;
+  width: 100px;
   margin: 10px 0;
 }
-
-</style>
