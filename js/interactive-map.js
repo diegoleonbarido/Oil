@@ -47,12 +47,6 @@
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-
-		
-	
-	
-    
   // We use queue when we're trying to load two different files 
   queue()
         .defer(d3.csv, "gini.csv") //This is tab separated file
@@ -99,7 +93,7 @@ var nestedGinis= d3.nest()
             .center([-102, 23])
             //Controls the size of the map and how it shows on the screen
             .scale(width * .7)
-            .translate([width/2, height/2]);
+            .translate([width/5, height/2]);
 
         var path = d3.geo.path()
           .projection(projection);
