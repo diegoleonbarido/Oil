@@ -1,6 +1,6 @@
 (function(){
 var margin = {top: 20, right: 80, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
+    width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -31,6 +31,12 @@ d3.csv("data/innovation.csv", function(error, data) {
     d.GDP_CAPITA = +d.GDP_CAPITA;
   });
 
+  data.sort(function(a,b) {
+    return a.GII - b.GII;
+  });
+
+  // console.log(d.GII);
+
   x.domain(d3.extent(data, function(d) { return d.GDP_CAPITA; })).nice();
   y.domain(d3.extent(data, function(d) { return d.GII; })).nice();
 
@@ -47,6 +53,7 @@ d3.csv("data/innovation.csv", function(error, data) {
 
   svg.append("g")
       .attr("class", "y axis")
+	  .attr("transform", "translate(" + width + ",0)" )	
       .call(yAxis)
       .append("text")
       .attr("class", "label")
