@@ -95,7 +95,6 @@ var countryGroup = svg.selectAll(".country-group")
   var highlightText = svg.append("text")
           .attr('class', "highlight-label")
           
-
   var circle = svg.selectAll(".mouse-circle")
       .data(data)
       .enter()

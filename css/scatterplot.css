@@ -1,0 +1,31 @@
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.innovators {
+  stroke: blue;
+  color: blue;	
+}
+
+.highlight {
+	fill:none;
+	stroke:red;
+	stroke-width:1px;
+}
+
+.highlight-label{
+	fill:black;
+	stroke:black;
+	font-size: 15px;
+}
