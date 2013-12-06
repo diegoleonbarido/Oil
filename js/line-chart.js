@@ -1,8 +1,8 @@
 (function(){
 //We'll start by makig a scatterplot, for which we'll need two scaales. First we need svg element to put our chart into. This code goes into anything potentially useful	
-var margin = {top:20, right: 100, bottom: 50, left:50 };	
+var margin = {top:10, right: 100, bottom: 50, left:50 };	
 var width = 750 - margin.left - margin.right,
- height = 700 - margin.top - margin.bottom;
+ height = 750 - margin.top - margin.bottom;
 
 //Because we're making a chart we need to specify the D3 Select
 var svg = d3.select("#line-chart-1").append("svg")
@@ -69,8 +69,8 @@ var countryGroup = svg.selectAll(".country-group")
       label = nolabel1.indexOf(d.key) > -1 ? "" : d.key ;
      return label; 
       })
-    .attr("x", xScale(2012) )
-    .attr("y", function(d) { 
+     .attr("x", xScale(2012) )
+     .attr("y", function(d) { 
       lastVal = d.values[d.values.length-1].bbd;
       return yScale(lastVal);
       });

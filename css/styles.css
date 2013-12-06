@@ -11,18 +11,21 @@ body {
   font-family:Century ;
   font-size: 60px;
   color: black;	
+	text-align: center;
 }
 
 .littlehead{
 	font-family:Century;
 	font-size: 40px;
 	color: black;
+	text-align: center;
 }
 
 p {
   font-family:century, georgia, serif;
   line-height:1.4em;
   font-size:19px;
+  text-align: justify;
 }
 
 svg {

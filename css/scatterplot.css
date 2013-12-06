@@ -14,14 +14,15 @@ body {
 }
 
 .innovators {
-  stroke: blue;
-  color: blue;	
+  stroke: yellow;
+  color: yellow;
+  fill: #F5F5F5;
 }
 
 .highlight {
 	fill:none;
 	stroke:red;
-	stroke-width:1px;
+	stroke-width:3px;
 }
 
 .highlight-label{

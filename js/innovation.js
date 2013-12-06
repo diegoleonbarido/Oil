@@ -3,6 +3,10 @@ var margin = {top: 20, right: 80, bottom: 30, left: 40},
     width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
+countries_high = ["Mexico", "Brazil","Finland", "Denmark", "Japan", "Germany", "Uruguay", "Norway","United States"];
+
+var sigs = d3.format(",.0f");    
+
 var x = d3.scale.linear()
     .range([0, width]);
 
@@ -32,10 +36,8 @@ d3.csv("data/innovation.csv", function(error, data) {
   });
 
   data.sort(function(a,b) {
-    return a.GII - b.GII;
+    return b.GII - a.GII;
   });
-
-  // console.log(d.GII);
 
   x.domain(d3.extent(data, function(d) { return d.GDP_CAPITA; })).nice();
   y.domain(d3.extent(data, function(d) { return d.GII; })).nice();
@@ -47,7 +49,7 @@ d3.csv("data/innovation.csv", function(error, data) {
     .append("text")
       .attr("class", "label")
       .attr("x", width)
-      .attr("y", -6)
+      .attr("y", 28)
       .style("text-anchor", "end")
       .text("GDP per Capita");
 
@@ -71,6 +73,25 @@ d3.csv("data/innovation.csv", function(error, data) {
       .attr("cx", function(d) { return x(d.GDP_CAPITA); })
       .attr("cy", function(d) { return y(d.GII); });
       // .style("fill", function(d) { return color(d.GDP_CAPITA); });
+
+	//
+	// var countryGroup = svg.selectAll(".country-group")
+	//     .data(dataByCountry)
+	//     .enter().append("g")
+	//     .attr("class", "country-group");
+	// 
+	//     countryGroup.append("text")
+	//     .text(function(d) { 
+	//       label = nolabel1.indexOf(d.key) > -1 ? "" : d.key ;
+	//      return label; 
+	//       })
+	//      .attr("x", xScale(2012) )
+	//      .attr("y", function(d) { 
+	//       lastVal = d.values[d.values.length-1].bbd;
+	//       return yScale(lastVal);
+	//       });
+	//
+
       
       var sigs = d3.format(",.0f");    
 
@@ -81,16 +102,16 @@ d3.csv("data/innovation.csv", function(error, data) {
       var highlightText = svg.append("text")
               .attr('class', "highlight-label")
 
-      var circle = svg.selectAll(".mouse-circle")
+		
+	var circleGroup = svg.selectAll(".mouse-circle")
           .data(data)
           .enter()
-          .append("circle")
+          .append("g")
           .attr("class", "mouse-circle")
-          .attr("r", 10)
-          .style("opacity", 0)
-          .attr("cx", function(d) { return x(d.GDP_CAPITA); })
-          .attr("cy", function(d) { return y(d.GII); })
-          .on("mouseover", function(d) { 
+          .attr("transform", function(d) { 
+			return "translate(" +  x(d.GDP_CAPITA) + "," +  y(d.GII) + ")"; 
+		  })
+		  .on("mouseover", function(d) { 
             //Making sure that the text is coming in
             // d3.select("#oilprod").text(d.bbd);   
             console.log("mouseover",highlightCircle)
@@ -102,17 +123,30 @@ d3.csv("data/innovation.csv", function(error, data) {
             highlightText
                 .attr("x",x(d.GDP_CAPITA) )
                 .attr("y",y(d.GII))
-                .text(d.Country);
+                .text(d.Country + "-" + sigs(d.GII))
                 // .attr("class","stylizing");
           }).on("mouseout", function(d) {
             highlightText.text("")
             highlightCircle.attr("cx", 1000)
-          })    
-      
-      
-      
-      
+          })
+		
+      var circle = circleGroup.append("circle")
+          .attr("r", 10)
+          .style("opacity", 0)
+          
 
+     circleGroup.append("text")
+		.text(function(d) {
+			return d.Country;
+		})
+		.style("display", function(d) {
+			return countries_high.indexOf(d.Country) < 0 ? "none" : "block"
+			// console.log(d.Country)
+		})
+      
+      
+ 
+  
   // var legend = svg.selectAll(".legend")
   //     .data(color.domain())
   //   .enter().append("g")

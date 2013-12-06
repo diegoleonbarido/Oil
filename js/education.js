@@ -1,5 +1,5 @@
 (function(){
-var margin = {top: 20, right: 100, bottom: 30, left: 40},
+var margin = {top: 20, right: 150, bottom: 30, left: 40},
     width = 600 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -26,6 +26,7 @@ var svg = d3.select("#education").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.csv("data/education.csv", function(error, data) {
+  data = data.filter(function(d) { return d.expstudent_prim_pctgdpcapita > 0; })
   data.forEach(function(d) {
     d.year = +d.year;
     d.expstudent_prim_pctgdpcapita = +d.expstudent_prim_pctgdpcapita;
@@ -114,7 +115,7 @@ d3.csv("data/education.csv", function(error, data) {
         highlightText
             .attr("x",x(d.year) )
             .attr("y",y(d.expstudent_prim_pctgdpcapita) )
-            .text(sigs(d.expstudent_prim_pctgdpcapita));
+            .text(sigs(d.expstudent_prim_pctgdpcapita) + "%" + " - " + d.country);
             // .attr("class","stylizing");
       }).on("mouseout", function(d) {
         highlightText.text("")

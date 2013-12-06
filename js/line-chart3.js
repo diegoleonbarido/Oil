@@ -1,8 +1,8 @@
 (function(){	
 //We'll start by makig a scatterplot, for which we'll need two scaales. First we need svg element to put our chart into. This code goes into anything potentially useful	
-var margin = {top:20, right: 200, bottom: 50, left:50 };	
+var margin = {top:100, right: 200, bottom: 100, left:50 };	
 var width = 975 - margin.left - margin.right,
-   height = 700 - margin.top - margin.bottom;
+   height = 750 - margin.top - margin.bottom;
 
 //Because we're making a chart we need to specify the D3 Select
 var svg = d3.select("#line-chart-3").append("svg")

@@ -1,8 +1,8 @@
 (function(){  
-	
-var margin = {top: 20, right: 100, bottom: 50, left: 50};
-    width = 750 - margin.left - margin.right,
-    height = 750 - margin.top - margin.bottom;
+		
+var margin = {top: 20, right: 100, bottom: 20, left: 50};
+    width = 1500 - margin.left - margin.right,
+    height = 650- margin.top - margin.bottom;
 
 var svg = d3.select("#oil-map").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -55,7 +55,7 @@ function ready(error, oil, mexico) {
   var projection = d3.geo.mercator()
       .center([-102, 23])
       .scale(width * 0.5)
-      .translate([width/7, height/2]);
+      .translate([width/6, height/2]);
 
   var path = d3.geo.path()
     .projection(projection);
@@ -68,11 +68,15 @@ function ready(error, oil, mexico) {
       .attr("d", path)
       .style("fill", function(d) { 
         if (d.properties.ENTIDAD === "VERACRUZ DE IGNACIO DE LA LLAVE" || d.properties.ENTIDAD === "TAMAULIPAS"  || d.properties.ENTIDAD === "CAMPECHE" || d.properties.ENTIDAD === "TABASCO") {
-          return "gold";
+          return "red";
         } else {
           return "black";
         }
          });
+
+
 }
+
+
 
 })();
