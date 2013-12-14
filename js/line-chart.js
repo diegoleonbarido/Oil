@@ -151,18 +151,18 @@ svg.append("g")
 // //Mouseover begins here
 
 //Adds the circle that tracks the value
-var focus = svg.append("g")
-    .attr("class", "focus")
-    .style("display", "none");
+// var focus = svg.append("g")
+//     .attr("class", "focus")
+//     .style("display", "none");
    
 //actually appends the circle
-focus.append("circle")
-     .attr("r", 4.5);    
+// focus.append("circle")
+//      .attr("r", 4.5);    
      
 //actually appends the text to the mouseover
-focus.append("text")
-    .attr("x", 9)
-    .attr("dy", ".35em");
+// focus.append("text")
+//     .attr("x", 9)
+//     .attr("dy", ".35em");
   
 
 // //Appending a rectangle for some reason    
